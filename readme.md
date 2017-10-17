@@ -1,7 +1,9 @@
 ﻿# WebMotors Components Replicator
 Component used to replicate data from a mysql database to the elasticsearch with dotnet C#
+
 ##Nuget url
 https://www.nuget.org/packages/WebMotors.Components.Replicator
+
 ##Database configuration
 ```
 	Turn ON Query Log in Mysql
