@@ -1,10 +1,10 @@
 ﻿# WebMotors Components Replicator
 Component used to replicate data from a mysql database to the elasticsearch with dotnet C#
 
-##Nuget url
+## Nuget url
 https://www.nuget.org/packages/WebMotors.Components.Replicator
 
-##Database configuration
+## Database configuration
 ```
 	Turn ON Query Log in Mysql
 		SET GLOBAL binlog_format = 'ROW';
@@ -27,7 +27,7 @@ https://www.nuget.org/packages/WebMotors.Components.Replicator
 		Limit 1000;
 	Verify if the argument field came with the comand executed
 ```
-##web.config or app.config configuration
+## web.config or app.config configuration
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
@@ -74,7 +74,7 @@ https://www.nuget.org/packages/WebMotors.Components.Replicator
 	</appSettings>
 </configuration>
 ```
-##Usage Code Configuration
+## Usage Code Configuration
 ```
 public class Configuration : Constants
 {
@@ -111,7 +111,7 @@ public class Configuration : Constants
 	}
 }
 ```
-##Usage Code Service as Console application
+## Usage Code Service as Console application
 ```
 add 
 	reference System.ServiceProccess
