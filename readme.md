@@ -1,7 +1,7 @@
 ﻿# WebMotors Components Replicator
 Component used to replicate data from a mysql database to the elasticsearch with dotnet C#
+##Database configuration
 ```
-Database configuration
 	Turn ON Query Log in Mysql
 		SET GLOBAL binlog_format = 'ROW';
 		SET GLOBAL binlog_row_image = 'full';
@@ -23,7 +23,8 @@ Database configuration
 		Limit 1000;
 	Verify if the argument field came with the comand executed
 ```
-web.config or app.config configuration
+##web.config or app.config configuration
+```
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
 	<configSections>
@@ -69,7 +70,8 @@ web.config or app.config configuration
 	</appSettings>
 </configuration>
 ```
-Usage Code Configuration
+##Usage Code Configuration
+```
 public class Configuration : Constants
 {
 	private List<string> _models = new List<string>() { "advert", "message_type" }; //Table names replication exactly on elasticsearch
@@ -105,7 +107,8 @@ public class Configuration : Constants
 	}
 }
 ```
-Usage Code Service as Console application
+##Usage Code Service as Console application
+```
 add 
 	reference System.ServiceProccess
 add
