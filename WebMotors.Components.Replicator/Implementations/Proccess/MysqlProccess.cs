@@ -82,6 +82,11 @@ namespace WebMotors.Components.Replicator.Implementations.Proccess
 		{
 			try
 			{
+				return Encoding.GetEncoding("ISO-8859-1").GetString((byte[])argument).Replace("\t", " ").Replace("	", " ").Replace("\n", " ").Trim();
+			}
+			catch { }
+			try
+			{
 				return System.Text.Encoding.UTF8.GetString((byte[])argument).Replace("\t", " ").Replace("	", " ").Replace("\n", " ").Trim();
 			}
 			catch { }

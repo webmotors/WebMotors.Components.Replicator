@@ -81,37 +81,17 @@ namespace WebMotors.Components.Replicator
 			}
 		}
 
-		protected override void FillInsert(Dictionary<string, object> fields)
+		protected override List<CoreModel> FillInsert(Dictionary<string, object> fields)
 		{
-			if (fieldsDatabase != null) return;
-			if (fields == null || fields.Count == 0) return;
-			var queryFields = string.Join(",", (from f in defaultFields select f.Key).ToList());
-			var whereFields = string.Join(" AND ", (from f in fields select string.Format("{0} = @{0}", f.Key)).ToList());
-			var fieldsDB = new Dictionary<string, object>();
-			var command = database.CreateCommand(string.Format(sqlGet, queryFields, table, whereFields));
-			foreach (var field in fields)
-				command.Parameters.Add(database.CreateParameter(field.Key, field.Value));
-			using (var reader = command.ExecuteReader())
-			{
-				bool first = true;
-				while (reader.Read())
-				{
-					if (first)
-					{
-						int numCampos = reader.FieldCount;
-						for (int i = 0; i < numCampos; i++)
-							fieldsDB.Add(reader.GetName(i).ToLower(), reader.GetValue(i));
-						first = false;
-					}
-					//insert resolve only 1 register
-					else
-						fieldsDB = new Dictionary<string, object>();
-				}
-			}
-			this.Fill(fieldsDB);
+			return FillInsertOrUpdate(fields);
 		}
 
 		protected override List<CoreModel> FillUpdate(Dictionary<string, object> fields)
+		{
+			return FillInsertOrUpdate(fields);
+		}
+
+		private List<CoreModel> FillInsertOrUpdate(Dictionary<string, object> fields)
 		{
 			if (fields == null) fields = new Dictionary<string, object>();
 			List<CoreModel> list = new List<CoreModel>();

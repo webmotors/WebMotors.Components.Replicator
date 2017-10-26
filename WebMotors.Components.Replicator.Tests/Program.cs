@@ -12,7 +12,7 @@ namespace WebMotors.Components.Replicator.Tests
 		{
 			if (Environment.UserInteractive)
 			{
-				if ("S".Equals(ConfigurationManager.AppSettings["migrate-data"]))
+				if ("Y".Equals(ConfigurationManager.AppSettings["migrate-data"]))
 					MigrateData();
 				else
 					ServiceStart();
