@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<configSections>
+		<section name="unity" type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Microsoft.Practices.Unity.Configuration" />
+	</configSections>
+	<connectionStrings>
+		<add name="mysql:replicator" connectionString="your connection string;" providerName="MySql.Data.MySqlClient" />
+	</connectionStrings>
+	<unity xmlns="http://schemas.microsoft.com/practices/2010/unity">
+		<alias alias="Constants" type="WebMotors.Components.Replicator.Constants, WebMotors.Components.Replicator" />
+		<alias alias="Proccess" type="WebMotors.Components.Replicator.IProccess, WebMotors.Components.Replicator" />
+		<alias alias="MysqlProccess" type="WebMotors.Components.Replicator.Implementations.Proccess.MysqlProccess, WebMotors.Components.Replicator" />
+
+		<alias alias="QueryAnalizer" type="WebMotors.Components.Replicator.QueryAnalizer, WebMotors.Components.Replicator" />
+		<alias alias="UpdateAnalizer" type="WebMotors.Components.Replicator.Implementations.Analizers.UpdateAnalizer, WebMotors.Components.Replicator" />
+		<alias alias="InsertAnalizer" type="WebMotors.Components.Replicator.Implementations.Analizers.InsertAnalizer, WebMotors.Components.Replicator" />
+		<alias alias="DeleteAnalizer" type="WebMotors.Components.Replicator.Implementations.Analizers.DeleteAnalizer, WebMotors.Components.Replicator" />
+
+		<alias alias="Replicator" type="WebMotors.Components.Replicator.IReplicator, WebMotors.Components.Replicator" />
+		<alias alias="ElasticSearchReplicator" type="WebMotors.Components.Replicator.Implementations.Replicators.ElasticSearch, WebMotors.Components.Replicator" />
+
+		<alias alias="CoreModel" type="WebMotors.Components.Replicator.CoreModel, WebMotors.Components.Replicator" />
+		<alias alias="MysqlDefault" type="WebMotors.Components.Replicator.Implementations.Model.MysqlDefault, WebMotors.Components.Replicator" />
+		
+		<!--Add alias to your custom objects like your Constants implementation and custom tables-->
+		<alias alias="Configuration" type="$rootnamespace$.Configuration, $rootnamespace$" />
+		<container>
+			<register type="Proccess" mapTo="MysqlProccess" name="mysql" />
+
+			<register type="QueryAnalizer" mapTo="UpdateAnalizer" name="update" />
+			<register type="QueryAnalizer" mapTo="InsertAnalizer" name="insert" />
+			<register type="QueryAnalizer" mapTo="DeleteAnalizer" name="delete" />
+
+			<register type="Replicator" mapTo="ElasticSearchReplicator" name="replicator" />
+			<register type="CoreModel" mapTo="MysqlDefault" name="default" />
+
+			<!--Add your custom objects in container like your Constants implementation and custom tables-->
+			<register type="Constants" mapTo="Configuration" name="constants" />
+		</container>
+	</unity>
+	<appSettings>
+		<add key="proccess-type" value="mysql" />
+		<add key="log-folder" value="C:\Projects\your-log-folder" />
+		<add key="elastic-search-url" value="http://your-url-elastic-search" />
+		<!--Your user that replicates data-->
+		<add key="mysql-proccess-user" value="replicator[replicator] @  [189.2.157.34]" />
+		<!--Your connection string name-->
+		<add key="connection-database-name" value="mysql:replicator" />
+		<!--Y value for first migrate data-->
+		<add key="migrate-data" value="N" />
+	</appSettings>
+</configuration>
