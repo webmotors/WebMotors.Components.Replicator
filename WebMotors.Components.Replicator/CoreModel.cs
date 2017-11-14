@@ -20,8 +20,8 @@ namespace WebMotors.Components.Replicator
 		#endregion
 
 		#region [ abstract ]
-		protected abstract List<CoreModel> FillInsert(Dictionary<string, object> fields);
-		protected abstract List<CoreModel> FillUpdate(Dictionary<string, object> fields);
+		protected abstract List<CoreModel> FillInsert(Dictionary<string, object> fields, Constants constants);
+		protected abstract List<CoreModel> FillUpdate(Dictionary<string, object> fields, Constants constants);
 		protected abstract bool FillDelete(Dictionary<string, object> fields);
 		public abstract void Migrate(IUnityContainer container, Constants constants);
 		#endregion
@@ -55,7 +55,7 @@ namespace WebMotors.Components.Replicator
 		#region [ public methods ]
 		public virtual void insert(Dictionary<string, object> fields, IUnityContainer container, Constants constants)
 		{
-			var models = FillInsert(fields);
+			var models = FillInsert(fields, constants);
 			foreach (var model in models)
 			{
 				var replicator = container.Resolve<IReplicator>(Constants.replicator);
@@ -65,7 +65,7 @@ namespace WebMotors.Components.Replicator
 
 		public virtual void update(Dictionary<string, object> fields, IUnityContainer container, Constants constants)
 		{
-			var models = FillUpdate(fields);
+			var models = FillUpdate(fields, constants);
 			foreach (var model in models)
 			{
 				var replicator = container.Resolve<IReplicator>(Constants.replicator);

@@ -40,10 +40,11 @@ namespace WebMotors.Components.Replicator
 				IUnityContainer container = new UnityContainer();
 				container.LoadConfiguration();
 				var proccess = container.Resolve<IProccess>(ConfigurationManager.AppSettings["proccess-type"]);
+				var constants = container.Resolve<Constants>(Constants.configuration);
 				while (!_cancellationTokenSource.IsCancellationRequested)
 				{
 					proccess.Run(container);
-					await Task.Delay(Constants.proccessTime);
+					await Task.Delay(constants.proccessTime);
 				}
 			});
 		}

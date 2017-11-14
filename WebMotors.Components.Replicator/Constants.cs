@@ -11,6 +11,18 @@ namespace WebMotors.Components.Replicator
 		public abstract string mysqlProccessUser { get; }
 		public abstract string logFolder { get; }
 		public abstract string elasticSearchUrl { get; }
+		/// <summary>
+		/// Send 1000 documents per time, override and change if is necessary to you.
+		/// </summary>
+		public virtual int limitMigrate { get { return 1000; } }
+		/// <summary>
+		/// In update querie send 1000 documents per time, override and change if is necessary to you.
+		/// </summary>
+		public virtual int limitUpdate { get { return 1000; } }
+		/// <summary>
+		/// Sleep 2 seconds to verify log and send new documents, override and change if is necessary to you.
+		/// </summary>
+		public virtual int proccessTime { get { return 2000; } }
 
 		internal static bool hasModel(string model, Constants constants)
 		{
@@ -64,8 +76,5 @@ namespace WebMotors.Components.Replicator
 		internal static string contentType = "application/json";
 		internal static string replicator = "replicator";
 		internal static string _default = "default";
-		internal static int limitMigrate = 1000;
-		internal static int limitUpdate = 1000;
-		internal static int proccessTime = 2000;
 	}
 }

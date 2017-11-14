@@ -81,17 +81,17 @@ namespace WebMotors.Components.Replicator
 			}
 		}
 
-		protected override List<CoreModel> FillInsert(Dictionary<string, object> fields)
+		protected override List<CoreModel> FillInsert(Dictionary<string, object> fields, Constants constants)
 		{
-			return FillInsertOrUpdate(fields);
+			return FillInsertOrUpdate(fields, constants);
 		}
 
-		protected override List<CoreModel> FillUpdate(Dictionary<string, object> fields)
+		protected override List<CoreModel> FillUpdate(Dictionary<string, object> fields, Constants constants)
 		{
-			return FillInsertOrUpdate(fields);
+			return FillInsertOrUpdate(fields, constants);
 		}
 
-		private List<CoreModel> FillInsertOrUpdate(Dictionary<string, object> fields)
+		private List<CoreModel> FillInsertOrUpdate(Dictionary<string, object> fields, Constants constants)
 		{
 			if (fields == null) fields = new Dictionary<string, object>();
 			List<CoreModel> list = new List<CoreModel>();
@@ -101,7 +101,7 @@ namespace WebMotors.Components.Replicator
 				var queryFields = string.Join(",", (from f in defaultFields select f.Key).ToList());
 				var whereFields = fields.Count == 0 ? string.Empty : "WHERE " + string.Join(" AND ", (from f in fields select string.Format("{0} = @{0}", f.Key)).ToList());
 				if (pkvalue != null) whereFields = string.Format("{0} {1} {2} > @{3}", whereFields, string.IsNullOrWhiteSpace(whereFields) ? "WHERE" : "AND", PKField);
-				var command = database.CreateCommand(string.Format(sqlGetLimit, queryFields, table, whereFields, PKField, Constants.limitUpdate));
+				var command = database.CreateCommand(string.Format(sqlGetLimit, queryFields, table, whereFields, PKField, constants.limitUpdate));
 				foreach (var field in fields)
 					command.Parameters.Add(database.CreateParameter(field.Key, field.Value));
 				if (pkvalue != null) command.Parameters.Add(database.CreateParameter(PKField, pkvalue));
@@ -125,7 +125,7 @@ namespace WebMotors.Components.Replicator
 						if (pkvalue == null)
 							throw new KeyNotFoundException("pk not fill on update");
 					}
-					if (count == 0 || count != Constants.limitUpdate) break;
+					if (count == 0 || count != constants.limitUpdate) break;
 				}
 			}
 			return list;
@@ -152,7 +152,7 @@ namespace WebMotors.Components.Replicator
 			{
 				var queryFields = string.Join(",", (from f in defaultFields select f.Key).ToList());
 				var whereFields = pkvalue != null ? string.Format("WHERE {0} > @{0}", PKField) : string.Empty;
-				var command = database.CreateCommand(string.Format(sqlGetLimit, queryFields, table, whereFields, PKField, Constants.limitMigrate));
+				var command = database.CreateCommand(string.Format(sqlGetLimit, queryFields, table, whereFields, PKField, constants.limitMigrate));
 				if (pkvalue != null)
 					command.Parameters.Add(database.CreateParameter(PKField, pkvalue));
 				using (var reader = command.ExecuteReader())
@@ -162,7 +162,7 @@ namespace WebMotors.Components.Replicator
 					{
 						pkvalue = ReplicateItem(reader, container, constants);
 					}
-					if (count == 0 || count != Constants.limitMigrate) break;
+					if (count == 0 || count != constants.limitMigrate) break;
 				}
 			}
 		}
